@@ -1,0 +1,12 @@
+{
+  "name": "gestor-turnos-canchas",
+  "version": "1.0.0",
+  "description": "Monorepo - Gestor de Turnos de Canchas (Backend + Frontend)",
+  "scripts": {
+    "install:all": "cd backend && npm install && cd ../frontend && npm install",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev": "npm run dev:backend & npm run dev:frontend"
+  },
+  "private": true
+}

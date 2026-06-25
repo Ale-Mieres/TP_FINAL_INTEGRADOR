@@ -1,0 +1,434 @@
+/* Dashboard.module.css */
+
+.dashboardLayout {
+  min-height: 100vh;
+  background: #0a0a14;
+  color: #e2e8f0;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+/* Navbar */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(15, 15, 26, 0.85);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navBrand {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #818cf8;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.navBrand span {
+  color: #fff;
+}
+
+.navUser {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.navUserName {
+  color: #94a3b8;
+  font-size: 0.9rem;
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .navUserName { display: inline; }
+}
+
+.navLink {
+  color: #818cf8;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color 0.2s;
+  padding: 0;
+}
+
+.navLink:hover { color: #a5b4fc; }
+
+.navLogout {
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+}
+
+.navLogout:hover {
+  background: rgba(239, 68, 68, 0.25);
+  transform: translateY(-1px);
+}
+
+/* Main */
+.mainContent {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 32px 16px 64px;
+}
+
+.sectionHeader {
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.pageTitle {
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 800;
+  background: linear-gradient(135deg, #818cf8, #c084fc);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0 0 8px;
+}
+
+.pageSubtitle {
+  color: #64748b;
+  font-size: 1rem;
+  margin: 0;
+}
+
+.section {
+  margin-bottom: 48px;
+}
+
+.sectionTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #e2e8f0;
+  margin: 0 0 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+/* Canchas grid */
+.canchasGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.canchaCard {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  padding: 20px;
+  cursor: pointer;
+  transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+.canchaCard:hover {
+  border-color: rgba(99, 102, 241, 0.5);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.15);
+}
+
+.canchaCardSelected {
+  border-color: #6366f1 !important;
+  background: rgba(99, 102, 241, 0.1) !important;
+  box-shadow: 0 0 0 2px rgba(99,102,241,0.3), 0 8px 24px rgba(99, 102, 241, 0.2) !important;
+}
+
+.canchaIcono {
+  font-size: 2.2rem;
+  flex-shrink: 0;
+}
+
+.canchaInfo {
+  flex: 1;
+}
+
+.canchaNombre {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #f1f5f9;
+  margin: 0 0 4px;
+}
+
+.canchaTipo {
+  font-size: 0.8rem;
+  color: #818cf8;
+  background: rgba(99,102,241,0.15);
+  padding: 2px 10px;
+  border-radius: 20px;
+}
+
+.canchaPrecio {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #34d399;
+  flex-shrink: 0;
+}
+
+.canchaSelectedBadge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #6366f1;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+
+/* Reserva form */
+.reservaForm {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  padding: 24px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  align-items: end;
+}
+
+.reservaField {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.reservaLabel {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #94a3b8;
+}
+
+.reservaSelect,
+.reservaInput {
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 10px;
+  padding: 12px 14px;
+  color: #ffffff;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  width: 100%;
+  box-sizing: border-box;
+  -webkit-appearance: none;
+}
+
+.reservaSelect option {
+  background: #1e1e3a;
+  color: #fff;
+}
+
+.reservaSelect:focus,
+.reservaInput:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99,102,241,0.2);
+}
+
+.reservaInput[type="date"]::-webkit-calendar-picker-indicator,
+.reservaInput[type="time"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  opacity: 0.6;
+}
+
+.reservaBtn {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 13px 20px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.15s, box-shadow 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 48px;
+  box-shadow: 0 4px 15px rgba(99,102,241,0.35);
+  white-space: nowrap;
+}
+
+.reservaBtn:hover:not(:disabled) {
+  opacity: 0.9;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(99,102,241,0.5);
+}
+
+.reservaBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Alerts */
+.alertSuccess {
+  background: rgba(34, 197, 94, 0.12);
+  border: 1px solid rgba(34,197,94,0.35);
+  color: #86efac;
+  border-radius: 10px;
+  padding: 12px 16px;
+  margin-top: 16px;
+  font-size: 0.9rem;
+}
+
+.alertError {
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239,68,68,0.35);
+  color: #fca5a5;
+  border-radius: 10px;
+  padding: 12px 16px;
+  margin-top: 16px;
+  font-size: 0.9rem;
+}
+
+/* Turnos table */
+.turnosTable {
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.tableHeader {
+  display: grid;
+  grid-template-columns: 2fr 1.5fr 2fr 1fr;
+  padding: 14px 20px;
+  background: rgba(99,102,241,0.1);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #818cf8;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  gap: 8px;
+}
+
+.tableRow {
+  display: grid;
+  grid-template-columns: 2fr 1.5fr 2fr 1fr;
+  padding: 14px 20px;
+  gap: 8px;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  transition: background 0.15s;
+  font-size: 0.9rem;
+  align-items: center;
+}
+
+.tableRow:hover {
+  background: rgba(255,255,255,0.03);
+}
+
+.estadoBadge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: capitalize;
+  background: rgba(34,197,94,0.15);
+  color: #4ade80;
+}
+
+/* Skeletons */
+.loadingGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.skeletonCard {
+  height: 80px;
+  border-radius: 16px;
+  background: linear-gradient(90deg, rgba(255,255,255,0.05) 25%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.05) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.loadingList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.skeletonRow {
+  height: 52px;
+  border-radius: 10px;
+  background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.04) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  to { background-position: -200% 0; }
+}
+
+/* Spinner */
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(255,255,255,0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  display: inline-block;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Empty state */
+.emptyState {
+  text-align: center;
+  padding: 48px 20px;
+  color: #475569;
+}
+
+.emptyIcon {
+  font-size: 3rem;
+  display: block;
+  margin-bottom: 16px;
+}
+
+/* Responsive table */
+@media (max-width: 640px) {
+  .tableHeader,
+  .tableRow {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    font-size: 0.8rem;
+  }
+
+  .tableHeader span:nth-child(3),
+  .tableHeader span:nth-child(4),
+  .tableRow span:nth-child(3),
+  .tableRow span:nth-child(4) {
+    grid-column: span 1;
+  }
+
+  .reservaForm {
+    grid-template-columns: 1fr;
+  }
+}
