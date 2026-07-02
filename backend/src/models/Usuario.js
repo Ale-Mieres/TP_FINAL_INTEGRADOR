@@ -16,6 +16,12 @@ const usuarioSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    // El rol del usuario: puede ser 'usuario' (por defecto) o 'admin'
+    rol: {
+      type: String,
+      enum: ['usuario', 'admin'],
+      default: 'usuario',
+    },
     // Este campo indica si el usuario verificó su cuenta por email
     isVerified: {
       type: Boolean,
@@ -24,6 +30,14 @@ const usuarioSchema = new mongoose.Schema(
     // Guardamos el token que mandamos al email para verificar la cuenta
     verificationToken: {
       type: String,
+    },
+    // Token para recuperar la contraseña
+    resetPasswordToken: {
+      type: String,
+    },
+    // Fecha de expiración del token de recuperación
+    resetPasswordExpires: {
+      type: Date,
     },
   },
   { timestamps: true } // agrega createdAt y updatedAt automaticamente

@@ -1,30 +1,200 @@
-# 🏟️ Backend - Gestor de Turnos
+# 🏟️ Gestor de Turnos — Backend
 
-Hola Profe! Este es el código del backend de mi trabajo final integrador.
+API REST construida con **Node.js + Express + MongoDB (Mongoose)**.  
+Implementa autenticación segura con JWT + bcrypt + verificación por email.
 
-## Arquitectura
+---
 
-Decidí separarlo en capas como vimos en clase para que quede más ordenado:
+## 📋 Requisitos previos
 
-1. **Routes (`/routes`)**: Solo declaran los endpoints y los apuntan a su controlador correspondiente. También aplican el middleware de auth si la ruta es privada.
-2. **Controllers (`/controllers`)**: Reciben el `req` y el `res`. Toman los datos, llaman al servicio y devuelven la respuesta al frontend (o mandan el error al next).
-3. **Services (`/services`)**: Tienen toda la lógica del negocio. Por ejemplo, en `turno.service.js` está la validación para que no se solapen los turnos.
-4. **Repositories (`/repositories`)**: Se encargan de hablar directo con la base de datos a través de Mongoose.
-5. **Models (`/models`)**: Los schemas de MongoDB (Cancha, Turno, Usuario).
+- Node.js >= 18
+- npm >= 9
+- Una base de datos MongoDB (local o Atlas)
+- Una cuenta de Gmail con una [App Password](https://support.google.com/accounts/answer/185833) habilitada (para el envío de emails)
 
-## Middlewares
+---
 
-- `auth.middleware.js`: Se fija si viene el token JWT en la cabecera `Authorization`. Si el token es válido, busca al usuario en la BD y lo guarda en `req.user` para que los controladores sepan quién está haciendo la petición.
-- `error.middleware.js`: Un manejador centralizado de errores. Todos los controladores tienen un bloque try/catch y le pasan el error al `next(error)`. Este middleware lo ataja y le devuelve un JSON ordenado al frontend.
+## 🚀 Instalación y ejecución local
 
-## Autenticación y Seguridad
+```bash
+# 1. Clonar el repositorio
+git clone <URL_REPO_BACKEND>
+cd backend
 
-- Uso **bcryptjs** para encriptar las contraseñas antes de guardarlas en MongoDB.
-- Uso **jsonwebtoken** (JWT) para mantener la sesión. El token dura 4 horas.
-- Usé **nodemailer** para la parte de verificación de cuentas. Cuando alguien se registra, su cuenta queda `isVerified: false` hasta que abra el mail y haga clic en el link.
+# 2. Instalar dependencias
+npm install
 
-## Datos
+# 3. Configurar variables de entorno
+cp .env.example .env
+# Editar el archivo .env con tus credenciales reales
 
-Las canchas las cargué directamente por consola en MongoDB porque no pedían un ABM de canchas, sino un gestor de turnos. Los turnos y usuarios sí se manejan todo por la API.
+# 4. Iniciar el servidor en modo desarrollo
+npm run dev
 
-¡Cualquier duda sobre el código estoy a disposición!
+# 5. Para producción
+npm start
+```
+
+El servidor levanta en `http://localhost:3001` por defecto.
+
+---
+
+## ⚙️ Variables de entorno
+
+| Variable       | Descripción                                      | Ejemplo                        |
+|----------------|--------------------------------------------------|--------------------------------|
+| `PORT`         | Puerto del servidor                              | `3001`                         |
+| `MONGO_URI`    | URI de conexión a MongoDB                        | `mongodb+srv://...`            |
+| `JWT_SECRET`   | Secreto para firmar/verificar tokens JWT         | `un_secreto_largo_y_aleatorio` |
+| `EMAIL_USER`   | Email remitente (Gmail)                          | `tu@gmail.com`                 |
+| `EMAIL_PASS`   | App Password de Gmail                            | `abcd efgh ijkl mnop`          |
+| `FRONTEND_URL` | URL del frontend (para CORS y links en emails)   | `http://localhost:5173`        |
+
+---
+
+## 🗂️ Arquitectura en capas
+
+```
+src/
+├── config/
+│   └── db.js                  # Conexión a MongoDB
+├── models/                    # Esquemas Mongoose
+│   ├── Usuario.js
+│   ├── Turno.js
+│   └── Cancha.js
+├── repositories/              # Acceso a la base de datos (queries)
+│   ├── auth.repository.js
+│   ├── turno.repository.js
+│   └── cancha.repository.js
+├── services/                  # Lógica de negocio
+│   ├── auth.service.js
+│   ├── turno.service.js
+│   ├── cancha.service.js
+│   ├── admin.service.js
+│   └── email.service.js
+├── controllers/               # Manejan req/res y delegan a services
+│   ├── auth.controller.js
+│   ├── turno.controller.js
+│   ├── cancha.controller.js
+│   └── admin.controller.js
+├── routes/                    # Express Router
+│   ├── auth.routes.js
+│   ├── turno.routes.js
+│   ├── cancha.routes.js
+│   └── admin.routes.js
+├── middleware/                # Middlewares reutilizables
+│   ├── auth.middleware.js     # Verifica JWT Bearer token
+│   ├── admin.middleware.js    # Verifica rol admin
+│   └── error.middleware.js    # Manejo centralizado de errores
+├── utils/
+│   └── jwt.js                 # Helpers para firmar/verificar JWT
+├── app.js                     # Configuración de Express
+└── index.js                   # Punto de entrada + seeding inicial
+```
+
+---
+
+## 📡 Documentación de Endpoints
+
+### 🔐 Autenticación — `/api/auth`
+
+| Método | Endpoint                   | Descripción                                  | Auth requerida |
+|--------|----------------------------|----------------------------------------------|----------------|
+| POST   | `/api/auth/register`       | Registra un usuario y envía email de verificación | No          |
+| GET    | `/api/auth/verify/:token`  | Activa la cuenta con el token del email      | No             |
+| POST   | `/api/auth/login`          | Login: devuelve JWT + datos del usuario      | No             |
+| POST   | `/api/auth/forgot-password`| Envía email para recuperar contraseña        | No             |
+| POST   | `/api/auth/reset-password` | Restablece la contraseña con el token        | No             |
+
+**Body de `/register`:**
+```json
+{ "nombre": "Juan", "email": "juan@mail.com", "password": "123456" }
+```
+
+**Body de `/login`:**
+```json
+{ "email": "juan@mail.com", "password": "123456" }
+```
+**Respuesta de `/login`:**
+```json
+{
+  "token": "eyJhbGc...",
+  "usuario": { "id": "...", "nombre": "Juan", "email": "juan@mail.com", "rol": "usuario" }
+}
+```
+
+---
+
+### 📅 Turnos — `/api/turnos` *(requieren Bearer JWT)*
+
+| Método | Endpoint                  | Descripción                                        |
+|--------|---------------------------|----------------------------------------------------|
+| POST   | `/api/turnos`             | Crea un nuevo turno (Create)                       |
+| GET    | `/api/turnos`             | Lista todos los turnos confirmados                 |
+| GET    | `/api/turnos/mis-turnos`  | Lista solo los turnos del usuario autenticado      |
+| GET    | `/api/turnos/:id`         | Detalle de un turno                                |
+| PUT    | `/api/turnos/:id`         | Actualiza fecha/cancha de un turno (dueño)         |
+| DELETE | `/api/turnos/:id`         | Cancela un turno (dueño)                           |
+
+**Body de POST `/api/turnos`:**
+```json
+{ "canchaId": "64a2f8b9d3b14a2c9f1a2b3c", "fecha": "2025-08-15T10:00:00.000Z" }
+```
+
+---
+
+### 🏟️ Canchas — `/api/canchas`
+
+| Método | Endpoint             | Descripción                            | Auth requerida |
+|--------|----------------------|----------------------------------------|----------------|
+| GET    | `/api/canchas`       | Lista todas las canchas                | No             |
+| GET    | `/api/canchas/:id`   | Detalle de una cancha                  | No             |
+| POST   | `/api/canchas`       | Crea una nueva cancha                  | Admin JWT      |
+| PUT    | `/api/canchas/:id`   | Actualiza una cancha                   | Admin JWT      |
+| DELETE | `/api/canchas/:id`   | Elimina una cancha                     | Admin JWT      |
+
+**Body de POST/PUT `/api/canchas`:**
+```json
+{ "nombre": "Cancha Central", "tipo": "Fútbol", "precio": 2500 }
+```
+
+---
+
+### 🛡️ Admin — `/api/admin` *(requieren Bearer JWT + rol admin)*
+
+| Método | Endpoint                      | Descripción                                     |
+|--------|-------------------------------|-------------------------------------------------|
+| GET    | `/api/admin/estadisticas`     | Recaudación total, reservas y lista completa    |
+| GET    | `/api/admin/disponibilidad`   | Disponibilidad de canchas (query: `?tipo=Fútbol`) |
+
+---
+
+## 🔒 Seguridad implementada
+
+- **Hashing de contraseñas**: bcryptjs con salt factor 10
+- **JWT**: Tokens con expiración de 4 horas (Bearer token)
+- **Verificación de email**: Token aleatorio (crypto.randomBytes) enviado por nodemailer
+- **Recuperación de contraseña**: Token con expiración de 1 hora
+- **Variables de entorno**: dotenv (nunca se hardcodean credenciales)
+- **CORS**: Configurado para aceptar solo el origen del frontend
+- **Manejo de errores centralizado**: middleware de error con statusCode personalizado
+
+---
+
+## 👤 Credenciales de prueba
+
+| Rol    | Email                        | Password   | Estado      |
+|--------|------------------------------|------------|-------------|
+| Admin  | `admin@gestorturnos.com`     | `Admin123!` | Verificado |
+| Usuario| Crear con `/api/auth/register` | —        | Ver email   |
+
+> El usuario admin se crea automáticamente al arrancar el servidor por primera vez.
+
+---
+
+## 🛠️ Scripts disponibles
+
+| Script      | Descripción                      |
+|-------------|----------------------------------|
+| `npm run dev` | Inicia con nodemon (hot reload) |
+| `npm start`  | Inicia en modo producción        |

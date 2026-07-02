@@ -5,6 +5,8 @@ const cors = require('cors');
 // Importamos las rutas
 const authRoutes = require('./routes/auth.routes');
 const turnoRoutes = require('./routes/turno.routes');
+const canchaRoutes = require('./routes/cancha.routes');
+const adminRoutes = require('./routes/admin.routes');
 
 // Importamos el middleware de errores
 const errorMiddleware = require('./middleware/error.middleware');
@@ -28,6 +30,8 @@ app.get('/api/health', (req, res) => {
 // Montamos las rutas en sus paths correspondientes
 app.use('/api/auth', authRoutes);
 app.use('/api/turnos', turnoRoutes);
+app.use('/api/canchas', canchaRoutes);
+app.use('/api/admin', adminRoutes);
 
 // El middleware de errores va AL FINAL de todo
 // Express sabe que es un error handler porque tiene 4 parámetros

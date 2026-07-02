@@ -1,0 +1,156 @@
+.loadingContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 99999;
+  background-color: #0b0f19;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Animamos la imagen de fondo con un zoom rápido y una vibración (shake) 
+   para simular el movimiento de la cámara, el golpe de la pelota y el salto del público */
+.backgroundImage {
+  position: absolute;
+  top: -10%;
+  left: -10%;
+  width: 120%;
+  height: 120%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  /* El zoom y el shake dan una sensación de mucho dinamismo sin tener que separar capas */
+  animation: actionCamera 2.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards, 
+             crowdShake 0.1s linear infinite alternate;
+}
+
+@keyframes actionCamera {
+  0% {
+    transform: scale(1) translate(0, 0);
+  }
+  15% {
+    /* "El golpe": zoom rápido */
+    transform: scale(1.15) translate(-2%, 1%);
+  }
+  100% {
+    /* Paneo suave siguiendo "la pelota" */
+    transform: scale(1.25) translate(3%, -3%);
+  }
+}
+
+/* Vibración ultra rápida simulando la euforia del estadio (se aplica sobre el zoom) */
+@keyframes crowdShake {
+  from { margin-left: 0px; margin-top: 0px; }
+  to { margin-left: 2px; margin-top: 1px; filter: brightness(1.05); }
+}
+
+/* Destellos aleatorios que simulan los flashes de las cámaras del público */
+.stadiumLights {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  opacity: 0;
+  pointer-events: none;
+  animation: flashes 2.8s infinite;
+}
+
+@keyframes flashes {
+  0%, 14%, 16%, 40%, 42%, 70%, 72%, 100% { opacity: 0; }
+  15%, 41%, 71% { opacity: 0.15; }
+}
+
+/* Efecto visual de televisor antiguo / videojuego retro para que combine perfecto con tu pixel art */
+.scanlines {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0),
+    rgba(255, 255, 255, 0) 50%,
+    rgba(0, 0, 0, 0.15) 50%,
+    rgba(0, 0, 0, 0.15)
+  );
+  background-size: 100% 4px;
+  pointer-events: none;
+}
+
+/* Contenedor del texto inferior */
+.loadingTextContainer {
+  position: relative;
+  z-index: 10;
+  margin-bottom: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.loadingText {
+  color: #ffffff;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 2.2rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  /* Borde negro duro típico de videojuegos pixel art */
+  text-shadow: 2px 2px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 0 8px 15px rgba(0,0,0,0.8);
+  margin-bottom: 24px;
+  letter-spacing: 2px;
+  animation: blinkText 1s infinite alternate;
+}
+
+@keyframes blinkText {
+  from { opacity: 1; }
+  to { opacity: 0.7; }
+}
+
+.loadingBar {
+  width: 350px;
+  height: 18px;
+  background-color: rgba(0, 0, 0, 0.6);
+  border: 3px solid #ffffff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+}
+
+.loadingProgress {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #4ade80, #22c55e);
+  box-shadow: 0 0 10px rgba(74, 222, 128, 0.8);
+  border-radius: 6px;
+  animation: fillBar 2.6s ease-out forwards;
+}
+
+@keyframes fillBar {
+  0% { width: 0%; }
+  15% { width: 40%; } /* Sube rápido cuando patea */
+  50% { width: 55%; } /* Se frena un poquito */
+  80% { width: 95%; }
+  100% { width: 100%; }
+}
+
+@media (max-width: 600px) {
+  .loadingText {
+    font-size: 1.5rem;
+  }
+  .loadingBar {
+    width: 250px;
+  }
+}

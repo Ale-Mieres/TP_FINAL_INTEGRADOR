@@ -1,5 +1,6 @@
-// Importamos el modelo Turno para hacer las operaciones en la base de datos
+// Importamos los modelos para hacer las operaciones en la base de datos
 const Turno = require('../models/Turno');
+require('../models/Cancha'); // Necesario para que mongoose registre el modelo antes de poblar
 
 // Crea un nuevo turno en la base de datos
 const create = async (data) => {
@@ -38,10 +39,30 @@ const findOne = async (filtro) => {
   return turno;
 };
 
+// Actualiza los datos de un turno por su ID
+const update = async (id, data) => {
+  const turnoActualizado = await Turno.findByIdAndUpdate(id, data, { new: true })
+    .populate('cancha')
+    .populate('usuario', 'nombre email');
+  return turnoActualizado;
+};
+
 // Elimina un turno por su ID
 const deleteTurno = async (id) => {
   const resultado = await Turno.findByIdAndDelete(id);
   return resultado;
 };
 
-module.exports = { create, find, findById, findOne, deleteTurno };
+// Marca un turno como pagado
+const marcarPagado = async (id) => {
+  return await Turno.findByIdAndUpdate(
+    id,
+    { pagado: true, pagoFecha: new Date() },
+    { new: true }
+  )
+    .populate('cancha')
+    .populate('usuario', 'nombre email');
+};
+
+module.exports = { create, find, findById, findOne, update, deleteTurno, marcarPagado };
+

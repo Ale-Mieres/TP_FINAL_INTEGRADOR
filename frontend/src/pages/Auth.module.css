@@ -5,19 +5,26 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #0f0f1a 0%, #1a1a3e 50%, #0d1b2a 100%);
+  /* Dark navy blue base */
+  background-color: #0b0f19;
+  /* Single scalable soccer field SVG in the background */
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 1000 600' preserveAspectRatio='xMidYMid slice' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='1000' height='600' fill='%230b0f19'/%3E%3Cpath d='M500,0 V600' stroke='rgba(255,255,255,0.04)' stroke-width='2'/%3E%3Ccircle cx='500' cy='300' r='80' fill='none' stroke='rgba(255,255,255,0.04)' stroke-width='2'/%3E%3Ccircle cx='500' cy='300' r='2' fill='rgba(255,255,255,0.04)'/%3E%3Crect x='0' y='150' width='120' height='300' fill='none' stroke='rgba(255,255,255,0.04)' stroke-width='2'/%3E%3Crect x='880' y='150' width='120' height='300' fill='none' stroke='rgba(255,255,255,0.04)' stroke-width='2'/%3E%3Crect x='0' y='220' width='40' height='160' fill='none' stroke='rgba(255,255,255,0.04)' stroke-width='2'/%3E%3Crect x='960' y='220' width='40' height='160' fill='none' stroke='rgba(255,255,255,0.04)' stroke-width='2'/%3E%3Cpath d='M120,230 A70 70 0 0 1 120 370' fill='none' stroke='rgba(255,255,255,0.04)' stroke-width='2'/%3E%3Cpath d='M880,230 A70 70 0 0 0 880 370' fill='none' stroke='rgba(255,255,255,0.04)' stroke-width='2'/%3E%3C/svg%3E");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
   padding: 16px;
 }
 
 .authCard {
-  background: rgba(255, 255, 255, 0.04);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 20px;
-  padding: 40px;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  padding: 40px 32px;
   width: 100%;
-  max-width: 440px;
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+  max-width: 360px;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
   animation: fadeUp 0.4s ease-out;
 }
 
@@ -28,38 +35,33 @@
 
 .authHeader {
   text-align: center;
-  margin-bottom: 32px;
+  margin-bottom: 24px;
 }
 
-.logo {
-  font-size: 3rem;
+.logoWrapper {
+  display: flex;
+  justify-content: center;
   margin-bottom: 12px;
-  display: block;
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { transform: scale(1); }
-  50%       { transform: scale(1.05); }
 }
 
 .authTitle {
-  font-size: 1.8rem;
-  font-weight: 700;
+  font-size: 1.25rem;
+  font-weight: 600;
   color: #ffffff;
   margin: 0 0 6px;
+  letter-spacing: 0.3px;
 }
 
 .authSubtitle {
-  color: #94a3b8;
-  font-size: 0.95rem;
+  color: #818cf8;
+  font-size: 0.75rem;
   margin: 0;
 }
 
 .form {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 16px;
 }
 
 .formGroup {
@@ -70,63 +72,69 @@
 
 .label {
   color: #cbd5e1;
-  font-size: 0.875rem;
-  font-weight: 500;
+  font-size: 0.75rem;
+  font-weight: 400;
+  margin-left: 2px;
 }
 
 .input {
-  background: rgba(255, 255, 255, 0.07);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 10px;
-  padding: 12px 16px;
-  color: #ffffff;
-  font-size: 1rem;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  background: #eef2ff;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  padding: 10px 12px;
+  color: #1e293b;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
   outline: none;
   width: 100%;
   box-sizing: border-box;
 }
 
 .input::placeholder {
-  color: #64748b;
+  color: #94a3b8;
+  font-weight: 400;
 }
 
 .input:focus {
   border-color: #6366f1;
   box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+  background: #ffffff;
 }
 
 .inputError {
   border-color: #ef4444;
+  background: #fef2f2;
 }
 
 .fieldError {
-  color: #f87171;
-  font-size: 0.8rem;
+  color: #fca5a5;
+  font-size: 0.75rem;
+  margin-left: 2px;
 }
 
 .submitBtn {
-  background: linear-gradient(135deg, #6366f1, #4f46e5);
+  background: linear-gradient(to right, #4f46e5, #6366f1);
   color: #ffffff;
   border: none;
-  border-radius: 10px;
-  padding: 14px;
-  font-size: 1rem;
-  font-weight: 600;
+  border-radius: 6px;
+  padding: 12px;
+  font-size: 0.9rem;
+  font-weight: 500;
   cursor: pointer;
   transition: opacity 0.2s, transform 0.15s, box-shadow 0.2s;
   margin-top: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 48px;
-  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+  min-height: 42px;
+  box-shadow: 0 4px 14px rgba(79, 70, 229, 0.3);
 }
 
 .submitBtn:hover:not(:disabled) {
   opacity: 0.92;
   transform: translateY(-1px);
-  box-shadow: 0 8px 25px rgba(99, 102, 241, 0.5);
+  box-shadow: 0 6px 20px rgba(79, 70, 229, 0.4);
 }
 
 .submitBtn:disabled {
@@ -135,9 +143,9 @@
 }
 
 .spinner {
-  width: 22px;
-  height: 22px;
-  border: 3px solid rgba(255,255,255,0.3);
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255,255,255,0.3);
   border-top-color: #fff;
   border-radius: 50%;
   animation: spin 0.7s linear infinite;
@@ -148,39 +156,36 @@
   to { transform: rotate(360deg); }
 }
 
-.successAlert {
-  background: rgba(34, 197, 94, 0.15);
-  border: 1px solid rgba(34, 197, 94, 0.4);
-  color: #86efac;
-  border-radius: 10px;
-  padding: 12px 16px;
-  font-size: 0.9rem;
+.successAlert, .errorAlert {
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-size: 0.8rem;
   margin-bottom: 16px;
   text-align: center;
+}
+
+.successAlert {
+  background: rgba(34, 197, 94, 0.15);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  color: #86efac;
 }
 
 .errorAlert {
   background: rgba(239, 68, 68, 0.15);
-  border: 1px solid rgba(239, 68, 68, 0.4);
+  border: 1px solid rgba(239, 68, 68, 0.3);
   color: #fca5a5;
-  border-radius: 10px;
-  padding: 12px 16px;
-  font-size: 0.9rem;
-  margin-bottom: 16px;
-  text-align: center;
 }
 
 .authSwitch {
   text-align: center;
-  margin-top: 24px;
+  margin-top: 16px;
   color: #94a3b8;
-  font-size: 0.9rem;
+  font-size: 0.75rem;
 }
 
 .authLink {
   color: #818cf8;
   text-decoration: none;
-  font-weight: 600;
   transition: color 0.2s;
 }
 
@@ -191,9 +196,6 @@
 
 @media (max-width: 480px) {
   .authCard {
-    padding: 28px 20px;
-  }
-  .authTitle {
-    font-size: 1.5rem;
+    padding: 32px 24px;
   }
 }

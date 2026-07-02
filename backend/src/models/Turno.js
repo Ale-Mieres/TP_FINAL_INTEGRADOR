@@ -25,6 +25,25 @@ const turnoSchema = new mongoose.Schema(
       enum: ['confirmado', 'cancelado', 'pendiente'],
       default: 'confirmado',
     },
+    // Indica si el usuario ya realizó el pago de este turno
+    pagado: {
+      type: Boolean,
+      default: false,
+    },
+    // Fecha y hora en que se confirmó el pago
+    pagoFecha: {
+      type: Date,
+      default: null,
+    },
+    bebidas: [{
+      nombre: String,
+      cantidad: Number,
+      subtotal: Number
+    }],
+    montoTotal: {
+      type: Number,
+      default: 0
+    }
   },
   { timestamps: true }
 );

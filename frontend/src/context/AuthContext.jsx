@@ -27,13 +27,21 @@ export const AuthProvider = ({ children }) => {
       (error) => Promise.reject(error)
     );
 
-    // Interceptor de response: si el servidor responde 401, cerramos la sesión
+    // Interceptor de response: si el servidor responde 401, limpiamos la sesión
+    // Usamos localStorage directamente para evitar problemas de referencia circular con logout
     const responseInterceptor = axios.interceptors.response.use(
       (response) => response,
       (error) => {
         if (error.response?.status === 401) {
-          console.log('Token expirado o inválido, cerrando sesión...');
-          logout();
+          const tokenActual = localStorage.getItem('token');
+          // Solo cerramos sesión si había un token (evita loop en rutas públicas)
+          if (tokenActual) {
+            console.log('Token expirado o inválido, cerrando sesión...');
+            localStorage.removeItem('token');
+            localStorage.removeItem('usuario');
+            // Forzamos recarga para que el AuthProvider limpie el estado
+            window.location.href = '/login';
+          }
         }
         return Promise.reject(error);
       }
@@ -96,8 +104,11 @@ export const AuthProvider = ({ children }) => {
   // Si hay token y usuario, el usuario está autenticado
   const estaAutenticado = !!token && !!usuario;
 
+  // Verificamos si el usuario tiene rol de admin
+  const esAdmin = usuario?.rol === 'admin';
+
   return (
-    <AuthContext.Provider value={{ usuario, token, login, logout, estaAutenticado, cargando }}>
+    <AuthContext.Provider value={{ usuario, token, login, logout, estaAutenticado, esAdmin, cargando }}>
       {children}
     </AuthContext.Provider>
   );
