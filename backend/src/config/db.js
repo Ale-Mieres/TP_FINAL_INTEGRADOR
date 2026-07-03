@@ -1,9 +1,6 @@
 // Importamos mongoose para conectarnos a la base de datos
 const mongoose = require('mongoose');
-const dns = require('dns');
 
-// Configuramos DNS de Google para evitar errores querySrv con Atlas
-dns.setServers(['8.8.8.8', '8.8.4.4']);
 
 // Esta función conecta nuestra app a MongoDB
 const connectDB = async () => {
