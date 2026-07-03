@@ -5,7 +5,18 @@ const nodemailer = require('nodemailer');
 // NOTA: Para producción, reemplazar con credenciales reales de Gmail (App Password)
 // y cambiar la condición para que use Gmail cuando EMAIL_PASS sea un App Password válido.
 const getTransporter = async () => {
-  // Usamos Ethereal para desarrollo/prueba — el link del email se imprime en la consola
+  // Si tenemos credenciales reales en las variables de entorno, enviamos un mail de verdad
+  if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
+    return nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
+  }
+
+  // Fallback para desarrollo: Usamos Ethereal si no hay credenciales configuradas
   console.log('📧 Usando Ethereal (cuenta de prueba). El link aparecerá en la consola del servidor...');
   const testAccount = await nodemailer.createTestAccount();
   return nodemailer.createTransport({
