@@ -75,17 +75,7 @@ const Login = () => {
       <div className={styles.authCard}>
         <div className={styles.authHeader}>
           <div className={styles.logoWrapper}>
-            <svg viewBox="0 0 64 64" width="56" height="56" xmlns="http://www.w3.org/2000/svg">
-              <g stroke="#cbd5e1" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M12 44c0-8.8 8.9-16 20-16s20 7.2 20 16v8H12v-8z" fill="rgba(255,255,255,0.05)"/>
-                <path d="M22 44c0-5.5 4.5-10 10-10s10 4.5 10 10v8H22v-8z" fill="#eef2ff" stroke="#334155"/>
-                <path d="M28 52v-6c0-2.2 1.8-4 4-4s4 1.8 4 4v6" fill="#0b0f19" stroke="#334155"/>
-                <path d="M32 16v12M20 22v10M44 22v10" stroke="#cbd5e1"/>
-                <path d="M32 16l6 3-6 3v-6z" fill="#6366f1" stroke="#6366f1"/>
-                <path d="M20 22l5 2.5-5 2.5v-5zM44 22l5 2.5-5 2.5v-5z" fill="#94a3b8" stroke="#94a3b8"/>
-                <path d="M8 52h48M16 38h0M48 38h0" stroke="#cbd5e1"/>
-              </g>
-            </svg>
+            <img src="/logo_messi.png" alt="Logo Gestor" style={{ width: '80px', height: '80px', objectFit: 'cover', borderRadius: '50%' }} />
           </div>
           <h1 className={styles.authTitle}>Iniciar Sesión</h1>
           <p className={styles.authSubtitle}>Gestor de Turnos de Canchas</p>

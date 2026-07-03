@@ -19,6 +19,9 @@ const Register = () => {
   const [mensajeExito, setMensajeExito] = useState('');
   const [errorGeneral, setErrorGeneral] = useState('');
 
+  const [mostrarPassword, setMostrarPassword] = useState(false);
+  const [mostrarConfirmarPassword, setMostrarConfirmarPassword] = useState(false);
+
   // Para deshabilitar el botón mientras se procesa
   const [cargando, setCargando] = useState(false);
 
@@ -84,17 +87,7 @@ const Register = () => {
       <div className={styles.authCard}>
         <div className={styles.authHeader}>
           <div className={styles.logoWrapper}>
-            <svg viewBox="0 0 64 64" width="56" height="56" xmlns="http://www.w3.org/2000/svg">
-              <g stroke="#cbd5e1" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M12 44c0-8.8 8.9-16 20-16s20 7.2 20 16v8H12v-8z" fill="rgba(255,255,255,0.05)"/>
-                <path d="M22 44c0-5.5 4.5-10 10-10s10 4.5 10 10v8H22v-8z" fill="#eef2ff" stroke="#334155"/>
-                <path d="M28 52v-6c0-2.2 1.8-4 4-4s4 1.8 4 4v6" fill="#0b0f19" stroke="#334155"/>
-                <path d="M32 16v12M20 22v10M44 22v10" stroke="#cbd5e1"/>
-                <path d="M32 16l6 3-6 3v-6z" fill="#6366f1" stroke="#6366f1"/>
-                <path d="M20 22l5 2.5-5 2.5v-5zM44 22l5 2.5-5 2.5v-5z" fill="#94a3b8" stroke="#94a3b8"/>
-                <path d="M8 52h48M16 38h0M48 38h0" stroke="#cbd5e1"/>
-              </g>
-            </svg>
+            <img src="/logo_messi.png" alt="Logo Gestor" style={{ width: '80px', height: '80px', objectFit: 'cover', borderRadius: '50%' }} />
           </div>
           <h1 className={styles.authTitle}>Crear Cuenta</h1>
           <p className={styles.authSubtitle}>Únete al Gestor de Turnos de Canchas</p>
@@ -140,35 +133,107 @@ const Register = () => {
 
           <div className={styles.formGroup}>
             <label htmlFor="password-register" className={styles.label}>Contraseña</label>
-            <input
-              id="password-register"
-              type="password"
-              value={password}
-              onChange={(e) => {
-                setPassword(e.target.value);
-                if (errores.password) setErrores({ ...errores, password: '' });
-              }}
-              className={`${styles.input} ${errores.password ? styles.inputError : ''}`}
-              placeholder="Mínimo 6 caracteres"
-              autoComplete="new-password"
-            />
+            <div style={{ position: 'relative' }}>
+              <input
+                id="password-register"
+                type={mostrarPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  if (errores.password) setErrores({ ...errores, password: '' });
+                }}
+                className={`${styles.input} ${errores.password ? styles.inputError : ''}`}
+                placeholder="Mínimo 6 caracteres"
+                autoComplete="new-password"
+                style={{ paddingRight: '40px' }}
+              />
+              <button
+                type="button"
+                onClick={() => setMostrarPassword(!mostrarPassword)}
+                style={{
+                  position: 'absolute',
+                  right: '10px',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  background: 'none',
+                  border: 'none',
+                  color: '#94a3b8',
+                  cursor: 'pointer',
+                  padding: '5px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}
+                title={mostrarPassword ? "Ocultar contraseña" : "Ver contraseña"}
+              >
+                {mostrarPassword ? (
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/>
+                    <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/>
+                    <path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/>
+                    <line x1="2" y1="2" x2="22" y2="22"/>
+                  </svg>
+                ) : (
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/>
+                    <circle cx="12" cy="12" r="3"/>
+                  </svg>
+                )}
+              </button>
+            </div>
             {errores.password && <span className={styles.fieldError}>{errores.password}</span>}
           </div>
 
           <div className={styles.formGroup}>
             <label htmlFor="confirmar-password" className={styles.label}>Confirmar contraseña</label>
-            <input
-              id="confirmar-password"
-              type="password"
-              value={confirmarPassword}
-              onChange={(e) => {
-                setConfirmarPassword(e.target.value);
-                if (errores.confirmarPassword) setErrores({ ...errores, confirmarPassword: '' });
-              }}
-              className={`${styles.input} ${errores.confirmarPassword ? styles.inputError : ''}`}
-              placeholder="Repetí tu contraseña"
-              autoComplete="new-password"
-            />
+            <div style={{ position: 'relative' }}>
+              <input
+                id="confirmar-password"
+                type={mostrarConfirmarPassword ? "text" : "password"}
+                value={confirmarPassword}
+                onChange={(e) => {
+                  setConfirmarPassword(e.target.value);
+                  if (errores.confirmarPassword) setErrores({ ...errores, confirmarPassword: '' });
+                }}
+                className={`${styles.input} ${errores.confirmarPassword ? styles.inputError : ''}`}
+                placeholder="Repetí tu contraseña"
+                autoComplete="new-password"
+                style={{ paddingRight: '40px' }}
+              />
+              <button
+                type="button"
+                onClick={() => setMostrarConfirmarPassword(!mostrarConfirmarPassword)}
+                style={{
+                  position: 'absolute',
+                  right: '10px',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  background: 'none',
+                  border: 'none',
+                  color: '#94a3b8',
+                  cursor: 'pointer',
+                  padding: '5px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}
+                title={mostrarConfirmarPassword ? "Ocultar contraseña" : "Ver contraseña"}
+              >
+                {mostrarConfirmarPassword ? (
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/>
+                    <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/>
+                    <path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/>
+                    <line x1="2" y1="2" x2="22" y2="22"/>
+                  </svg>
+                ) : (
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/>
+                    <circle cx="12" cy="12" r="3"/>
+                  </svg>
+                )}
+              </button>
+            </div>
             {errores.confirmarPassword && (
               <span className={styles.fieldError}>{errores.confirmarPassword}</span>
             )}
