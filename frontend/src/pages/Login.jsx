@@ -75,7 +75,7 @@ const Login = () => {
       <div className={styles.authCard}>
         <div className={styles.authHeader}>
           <div className={styles.logoWrapper}>
-            <img src="/logo_messi.png" alt="Logo Gestor" style={{ width: '80px', height: '80px', objectFit: 'cover', borderRadius: '50%' }} />
+            <img src="/logo_messi.png" alt="Logo Gestor" style={{ width: 'auto', height: '100px', objectFit: 'contain', filter: 'drop-shadow(0px 4px 6px rgba(0,0,0,0.3))' }} />
           </div>
           <h1 className={styles.authTitle}>Iniciar Sesión</h1>
           <p className={styles.authSubtitle}>Gestor de Turnos de Canchas</p>
