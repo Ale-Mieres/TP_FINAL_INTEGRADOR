@@ -1,14 +1,11 @@
 // Controlador de Autenticación: maneja request/response, delega lógica al servicio
+// Las validaciones de campos requeridos se hacen en el middleware de validación (validation.middleware.js)
 const authService = require('../services/auth.service');
 
 // POST /api/auth/register
 const register = async (req, res, next) => {
   try {
     const { nombre, email, password } = req.body;
-
-    if (!nombre || !email || !password) {
-      return res.status(400).json({ error: 'Todos los campos son obligatorios' });
-    }
 
     const resultado = await authService.registrar({ nombre, email, password });
 
@@ -36,10 +33,6 @@ const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
-    if (!email || !password) {
-      return res.status(400).json({ error: 'Email y contraseña son obligatorios' });
-    }
-
     const resultado = await authService.login({ email, password });
     res.status(200).json(resultado);
   } catch (error) {
@@ -51,10 +44,6 @@ const login = async (req, res, next) => {
 const forgotPassword = async (req, res, next) => {
   try {
     const { email } = req.body;
-
-    if (!email) {
-      return res.status(400).json({ error: 'El email es obligatorio' });
-    }
 
     await authService.forgotPassword(email);
     res.status(200).json({
@@ -69,10 +58,6 @@ const forgotPassword = async (req, res, next) => {
 const resetPassword = async (req, res, next) => {
   try {
     const { token, newPassword } = req.body;
-
-    if (!token || !newPassword) {
-      return res.status(400).json({ error: 'El token y la nueva contraseña son obligatorios' });
-    }
 
     await authService.resetPassword({ token, newPassword });
     res.status(200).json({ message: 'Tu contraseña ha sido actualizada correctamente' });

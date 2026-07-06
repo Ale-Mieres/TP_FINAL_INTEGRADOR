@@ -184,7 +184,7 @@ const AdminDashboard = () => {
                         {TIPOS_ICONO[turno.cancha?.tipo]} {turno.cancha?.tipo}
                       </span>
                       <span>{formatearFecha(turno.fecha)}</span>
-                      <span className={styles.estadoBadge}>{turno.estado}</span>
+                      <span className={`${styles.estadoBadge} ${styles[`estado${turno.estado.charAt(0).toUpperCase() + turno.estado.slice(1)}`] || ''}`}>{turno.estado}</span>
                     </div>
                   ))}
                 </div>

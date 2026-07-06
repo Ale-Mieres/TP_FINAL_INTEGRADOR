@@ -1,4 +1,5 @@
 // Controlador de Administración: maneja request/response, delega lógica al servicio
+// Las validaciones de campos requeridos se hacen en el middleware de validación (validation.middleware.js)
 const adminService = require('../services/admin.service');
 
 // GET /api/admin/estadisticas
@@ -15,9 +16,6 @@ const obtenerEstadisticas = async (req, res, next) => {
 const obtenerDisponibilidad = async (req, res, next) => {
   try {
     const { tipo } = req.query;
-    if (!tipo) {
-      return res.status(400).json({ error: 'El parámetro "tipo" es obligatorio' });
-    }
     const datos = await adminService.obtenerDisponibilidad(tipo);
     res.status(200).json(datos);
   } catch (error) {

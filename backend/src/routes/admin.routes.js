@@ -4,6 +4,7 @@ const router = express.Router();
 const authMiddleware = require('../middleware/auth.middleware');
 const adminMiddleware = require('../middleware/admin.middleware');
 const adminController = require('../controllers/admin.controller');
+const { validarDisponibilidad } = require('../middleware/validation.middleware');
 
 // Aplicamos ambos middlewares a todas las rutas de este archivo
 router.use(authMiddleware);
@@ -13,6 +14,6 @@ router.use(adminMiddleware);
 router.get('/estadisticas', adminController.obtenerEstadisticas);
 
 // GET /api/admin/disponibilidad?tipo=Fútbol — disponibilidad de canchas por tipo (7 días)
-router.get('/disponibilidad', adminController.obtenerDisponibilidad);
+router.get('/disponibilidad', validarDisponibilidad, adminController.obtenerDisponibilidad);
 
 module.exports = router;

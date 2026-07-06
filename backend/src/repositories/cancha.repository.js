@@ -11,6 +11,16 @@ const findById = async (id) => {
   return await Cancha.findById(id);
 };
 
+// Busca canchas que coincidan con un filtro (ej: { tipo: 'Fútbol' })
+const findByFilter = async (filtro = {}) => {
+  return await Cancha.find(filtro);
+};
+
+// Cuenta el total de canchas registradas
+const count = async () => {
+  return await Cancha.countDocuments();
+};
+
 // Crea una nueva cancha
 const create = async (data) => {
   const cancha = new Cancha(data);
@@ -28,4 +38,4 @@ const deleteCancha = async (id) => {
   return await Cancha.findByIdAndDelete(id);
 };
 
-module.exports = { findAll, findById, create, update, deleteCancha };
+module.exports = { findAll, findById, findByFilter, count, create, update, deleteCancha };

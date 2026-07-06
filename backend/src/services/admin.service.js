@@ -1,32 +1,41 @@
 // Servicio de Administración: lógica de negocio para el panel de administrador
-const Turno = require('../models/Turno');
-const Cancha = require('../models/Cancha');
+// Usa los repositories en lugar de acceder directamente a los modelos,
+// centralizando las consultas y evitando duplicación de populate/filtros
+const turnoRepository = require('../repositories/turno.repository');
+const canchaRepository = require('../repositories/cancha.repository');
 
 // Calcula y devuelve las estadísticas generales del sistema
 const obtenerEstadisticas = async () => {
-  const turnos = await Turno.find({ estado: 'confirmado' })
-    .populate('cancha')
-    .populate('usuario', 'nombre email')
-    .sort({ fecha: -1 });
+  // Traemos todos los turnos usando el repository (ya incluye populate de cancha y usuario)
+  const turnos = await turnoRepository.find({}, { sort: { fecha: -1 } });
 
-  const recaudacionTotal = turnos.reduce((total, turno) => {
+  // Para la recaudación y las estadísticas, solo contamos los confirmados
+  const turnosConfirmados = turnos.filter(turno => turno.estado === 'confirmado');
+
+  const recaudacionTotal = turnosConfirmados.reduce((total, turno) => {
     return total + (turno.montoTotal || turno.cancha?.precio || 0);
   }, 0);
 
   const reservasPorTipo = {};
-  turnos.forEach((turno) => {
+  turnosConfirmados.forEach((turno) => {
     const tipo = turno.cancha?.tipo || 'Desconocido';
     reservasPorTipo[tipo] = (reservasPorTipo[tipo] || 0) + 1;
   });
 
-  const totalCanchas = await Cancha.countDocuments();
+  const totalCanchas = await canchaRepository.count();
 
-  return { recaudacionTotal, totalReservas: turnos.length, reservasPorTipo, turnos, totalCanchas };
+  return { 
+    recaudacionTotal, 
+    totalReservas: turnosConfirmados.length, 
+    reservasPorTipo, 
+    turnos, // Enviamos todos los turnos para la tabla
+    totalCanchas 
+  };
 };
 
 // Devuelve la disponibilidad de canchas de un tipo dado para los próximos 7 días
 const obtenerDisponibilidad = async (tipo) => {
-  const canchas = await Cancha.find({ tipo });
+  const canchas = await canchaRepository.findByFilter({ tipo });
 
   if (canchas.length === 0) {
     const error = new Error(`No se encontraron canchas de tipo "${tipo}"`);
@@ -41,14 +50,8 @@ const obtenerDisponibilidad = async (tipo) => {
   const finRango = new Date(hoy);
   finRango.setDate(finRango.getDate() + 7);
 
-  const turnosOcupados = await Turno.find({
-    cancha: { $in: canchaIds },
-    estado: 'confirmado',
-    fecha: { $gte: hoy, $lt: finRango },
-  })
-    .populate('cancha')
-    .populate('usuario', 'nombre email')
-    .sort({ fecha: 1 });
+  // Usamos el método del repository en lugar de consultar directamente el modelo
+  const turnosOcupados = await turnoRepository.findByFechaRangoYCanchas(canchaIds, hoy, finRango);
 
   const horasPosibles = Array.from({ length: 16 }, (_, i) => i + 8);
 

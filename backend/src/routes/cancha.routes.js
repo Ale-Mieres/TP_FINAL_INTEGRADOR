@@ -5,6 +5,7 @@ const router = express.Router();
 const canchaController = require('../controllers/cancha.controller');
 const authMiddleware = require('../middleware/auth.middleware');
 const adminMiddleware = require('../middleware/admin.middleware');
+const { validarCrearCancha } = require('../middleware/validation.middleware');
 
 // GET /api/canchas — lista todas las canchas (ruta pública para el frontend)
 router.get('/', canchaController.obtenerCanchas);
@@ -13,8 +14,8 @@ router.get('/', canchaController.obtenerCanchas);
 router.get('/:id', canchaController.obtenerCanchaPorId);
 
 // Las rutas de escritura requieren autenticación + rol admin
-// POST /api/canchas — crea una nueva cancha
-router.post('/', authMiddleware, adminMiddleware, canchaController.crearCancha);
+// POST /api/canchas — crea una nueva cancha (valida nombre, tipo, precio)
+router.post('/', authMiddleware, adminMiddleware, validarCrearCancha, canchaController.crearCancha);
 
 // PUT /api/canchas/:id — actualiza una cancha
 router.put('/:id', authMiddleware, adminMiddleware, canchaController.actualizarCancha);

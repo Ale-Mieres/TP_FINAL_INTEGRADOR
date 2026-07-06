@@ -1,4 +1,5 @@
-// Importamos el servicio que tiene la lógica de los turnos
+// Controlador de Turnos: maneja request/response, delega la lógica al servicio
+// Las validaciones de campos requeridos se hacen en el middleware de validación (validation.middleware.js)
 const turnoService = require('../services/turno.service');
 
 // Controlador para crear un turno
@@ -6,11 +7,6 @@ const crearTurno = async (req, res, next) => {
   try {
     const { canchaId, fecha, bebidas, montoTotal } = req.body;
     const usuarioId = req.user._id; // el usuario viene del middleware de auth
-
-    // Validamos que vengan los datos necesarios
-    if (!canchaId || !fecha) {
-      return res.status(400).json({ error: 'Faltan datos: canchaId y fecha son obligatorios' });
-    }
 
     const turno = await turnoService.crearTurno({ canchaId, usuarioId, fecha, bebidas, montoTotal });
     res.status(201).json(turno);
@@ -55,10 +51,6 @@ const actualizarTurno = async (req, res, next) => {
   try {
     const { canchaId, fecha } = req.body;
     const usuarioId = req.user._id;
-
-    if (!fecha) {
-      return res.status(400).json({ error: 'La nueva fecha es obligatoria' });
-    }
 
     const turno = await turnoService.actualizarTurno(req.params.id, usuarioId, { canchaId, fecha });
     res.status(200).json(turno);

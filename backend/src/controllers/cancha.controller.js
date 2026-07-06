@@ -1,4 +1,5 @@
 // Controlador de Canchas: maneja request/response, delega la lógica al servicio
+// Las validaciones de campos requeridos se hacen en el middleware de validación (validation.middleware.js)
 const canchaService = require('../services/cancha.service');
 
 // GET /api/canchas — lista todas las canchas
@@ -25,9 +26,6 @@ const obtenerCanchaPorId = async (req, res, next) => {
 const crearCancha = async (req, res, next) => {
   try {
     const { nombre, tipo, precio } = req.body;
-    if (!nombre || !tipo || !precio) {
-      return res.status(400).json({ error: 'nombre, tipo y precio son obligatorios' });
-    }
     const cancha = await canchaService.crearCancha({ nombre, tipo, precio });
     res.status(201).json(cancha);
   } catch (error) {
